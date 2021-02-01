@@ -1,0 +1,61 @@
+1. List docker image
+docker images
+
+2. List container
+docker ps <-a>
+
+3. Run a docker
+docker run -it [image_name] bash
+
+4. Access to running container
+docker exec -it [container_id or container_name] bash
+
+5. Commit change of container to docker image
+docker commit [container_name or container_id] [new_image_name]
+
+6. Stop running container
+docker stop [container_id or container_name]
+docker stop $(docker ps -aq) # Stop all container
+
+7. Start stoped container
+docker start [container_id or container_name]
+
+8. Remove container
+docker rm [container_id or container_name]
+docker rm $(docker ps -aq) # Remove all
+
+9. Export container
+docker export [container_id or container_name] | gzip > file_export.tar.gz
+
+10. Import docker => images
+zcat  file_export.tar.gz | docker [new_name_image]
+docker images # check
+
+11. Remove docker image
+docker rmi [image_name]
+
+
+Loi: docker: Error response from daemon: Unknown runtime specified nvidia.
+Solution:
+1. 
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+2.
+sudo mkdir -p /etc/systemd/system/docker.service.d
+sudo tee /etc/systemd/system/docker.service.d/override.conf <<EOF
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd --host=fd:// --add-runtime=nvidia=/usr/bin/nvidia-container-runtime
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+
+** Move docker image to other computer
+1. Save images
+docker save <REPOSITORY> > <images_name>.tar
+2. Load images
+docker load < <images_name>.tar 
+3. Run images
+docker run -it  --runtime=nvidia --rm  --net=host --privileged <Image ID>

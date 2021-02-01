@@ -1,0 +1,16 @@
+version : "3.7"
+
+services:
+  uwsgi:
+    build: ./uwsgi
+    container_name: uwsgi_img_classification
+    restart: always
+    expose:
+      - 660
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"

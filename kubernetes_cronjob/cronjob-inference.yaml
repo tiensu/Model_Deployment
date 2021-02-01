@@ -1,0 +1,22 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: inference-cronjob
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: inference-container
+            imagePullPolicy: Always
+            image: tiensu/docker-ml:latest
+            command: ["python3",  "inference.py"]
+            env:
+            - name: AWS_ACCESS_KEY_ID
+              value: ""
+            - name: AWS_SECRET_ACCESS_KEY
+              value: ""
+          restartPolicy: Never
+      backoffLimit: 0

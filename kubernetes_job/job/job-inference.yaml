@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-inference-ml-model
+spec:
+  template:
+    spec:
+      containers:
+      - name: inference-container
+        imagePullPolicy: Always
+        image: tiensu/docker-ml:latest
+        command: ["python3",  "inference.py"]
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          value: ""
+        - name: AWS_SECRET_ACCESS_KEY
+          value: ""
+      restartPolicy: Never
+  backoffLimit: 0

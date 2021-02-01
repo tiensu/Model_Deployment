@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ml-model-batch-infer
+  labels:
+    app: python3
+spec:
+  containers:
+  - name: container-ml-model-batch-infer
+    image: tiensu/ml-model-batch-infer:latest
+    command:  ['python3', 'inference.py']
+  restartPolicy: Never

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: online-inference-development
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: model-api
+  template:
+    metadata:
+      labels:
+        app: model-api
+    spec:
+      containers:
+      - name: model-api
+        imagePullPolicy: Always
+        image: tiensu/ml-model-online-infer:latest
+        command: ["python3",  "api.py"]
+        ports:
+        - containerPort: 5000

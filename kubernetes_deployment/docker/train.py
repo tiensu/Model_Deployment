@@ -1,7 +1,6 @@
 import json
 import os
 
-import boto3
 from joblib import dump
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,7 +13,6 @@ from sklearn.metrics import mean_squared_error
 MODEL_DIR = os.environ["MODEL_DIR"]
 MODEL_FILE = os.environ["MODEL_FILE"]
 METADATA_FILE = os.environ["METADATA_FILE"]
-BUCKET_NAME = os.environ["BUCKET_NAME"]
 MODEL_PATH = os.path.join(MODEL_DIR, MODEL_FILE)
 METADATA_PATH = os.path.join(MODEL_DIR, METADATA_FILE)
 
@@ -52,7 +50,3 @@ dump(clf, MODEL_PATH)
 print("Serializing metadata to: {}".format(METADATA_PATH))
 with open(METADATA_PATH, 'w') as outfile:  
     json.dump(metadata, outfile)
-
-print("Moving to S3")
-s3 = boto3.client('s3')
-s3.upload_file(MODEL_PATH, BUCKET_NAME, MODEL_FILE)
